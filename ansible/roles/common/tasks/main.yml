@@ -1,0 +1,43 @@
+---
+- name: ensure sudo is installed
+  apt:
+    name: sudo
+    state: present
+
+- name: update sshd config
+  template: src=etc/ssh/sshd_config
+    dest=/etc/ssh/sshd_config
+    backup=yes
+    owner=0 group=0 mode=0644
+    validate='/usr/sbin/sshd -T -f %s'
+  notify:
+    - restart sshd
+
+- name: update MotD
+  template: src=etc/motd.j2 dest=/etc/motd.head
+
+- name: Add the user 'tcc' and a primary group of 'sudo'
+  user:
+    name: tcc
+    comment: square fish
+    groups: sudo
+    append: yes
+
+- name: Create tcc home directory if it does not exist
+  file:
+    path: /home/tcc/.ssh
+    state: directory
+    mode: '0755'
+    owner: tcc
+- name: copy tcc public key
+  template: src=etc/id_rsa.pub dest=/home/tcc/.ssh/authorized_keys
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+

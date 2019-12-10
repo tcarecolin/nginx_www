@@ -1,0 +1,37 @@
+{
+  "variables": {
+    "organization_id": "{{ env `SCALEWAY_ORGANIZATION_ID` }}",
+    "api_token": "{{ env `SCALEWAY_API_TOKEN` }}",
+    "api_access_key": "{{ env `SCALEWAY_API_ACCESS_KEY` }}"
+  },
+  "builders": [
+    {
+      "type": "scaleway",
+      "organization_id": "{{ user `organization_id` }}",
+      "api_token": "{{ user `api_token` }}",
+      "server_name": "trinity",
+      "image_name": "ubuntu-nginx",
+      "snapshot_name": "ubuntu-nginx-snapshot",
+      "image": "f974feac-abae-4365-b988-8ec7d1cec10d",
+      "region": "par1",
+      "commercial_type": "DEV1-S",
+      "ssh_private_key_file": "/home/tcc/.ssh/id_rsa_deciphed",
+      "ssh_username": "root",
+      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+      "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+    }
+  ],
+  "provisioners": [
+   {
+     "type": "shell",
+     "inline": [
+         "sleep 30",
+         "apt-get update",
+         "apt-get -y upgrade",
+         "apt-get install -y nginx",
+         "adduser tcc",
+         "usermod -aG sudo tcc"
+     ]
+   }
+ ]
+}

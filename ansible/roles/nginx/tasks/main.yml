@@ -1,0 +1,24 @@
+---
+- name: ensure nginx is at the latest version
+  apt:
+    name: nginx
+    state: present
+
+- name: copy nginx configuration file
+  template: src=etc/nginx/nginx.conf dest=/etc/nginx/nginx.conf
+
+- name: Create ssl directory if it does not exist
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: '0755'
+
+- name: copy nginx SSL files
+  template: src=etc/nginx/ssl/www.cer dest=/etc/nginx/ssl/ssl.cer mode=0644
+  template: src=etc/nginx/ssl/nginx_p.key dest=/etc/nginx/ssl/ssl.key mode=0644
+  template: src=etc/nginx/ssl/dhparams dest=/etc/nginx/ssl/dhparam.pem mode=0644
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started

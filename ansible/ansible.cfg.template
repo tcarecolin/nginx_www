@@ -1,0 +1,14 @@
+[defaults]
+inventory = inventories/
+forks = 20
+#interpreter_python = auto_silent
+
+# Disable SSH key host checking
+host_key_checking = False
+
+# Default user to use for playbooks if user is not specified
+remote_user = root
+
+[ssh_connection]
+ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o PreferredAuthentications=publickey
+pipelining = true

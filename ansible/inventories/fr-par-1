@@ -1,0 +1,10 @@
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[trinity:vars]
+ansible_user=root
+
+[trinity]
+127.0.0.1
+
+

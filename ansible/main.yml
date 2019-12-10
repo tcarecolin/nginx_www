@@ -1,0 +1,9 @@
+---
+  - hosts: trinity
+    become: true
+    roles:
+      - common
+      - nginx
+    handlers:
+      - name: restart sshd
+        service: name=sshd state=restarted
